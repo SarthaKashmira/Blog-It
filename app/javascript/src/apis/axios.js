@@ -39,6 +39,7 @@ const responseInterceptors = () => {
     error => Promise.reject(error)
   );
 };
+
 const requestInterceptors = () => {
   // since all ramda functions are curried by default so
   axios.interceptors.request.use(
@@ -53,4 +54,4 @@ export const initializeAxios = () => {
   setHttpHeaders();
   requestInterceptors();
   responseInterceptors();
-}
+};
