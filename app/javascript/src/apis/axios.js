@@ -1,6 +1,6 @@
 import axios from "axios";
-import { keysToCamelCase, serializeKeysToSnakeCase } from "neetocist";
-import { evolve } from "ramda";
+// import { keysToCamelCase, serializeKeysToSnakeCase } from "neetocist";
+// import { evolve } from "ramda";
 
 const setAuthHeaders = () => {
   axios.defaults.headers = {
@@ -25,33 +25,33 @@ const setHttpHeaders = () => {
   };
 };
 
-const transformResponseKeysToCamelCase = response => {
-  if (response.data) response.data = keysToCamelCase(response.data);
-};
+// const transformResponseKeysToCamelCase = response => {
+//   if (response.data) response.data = keysToCamelCase(response.data);
+// };
 
-const responseInterceptors = () => {
-  axios.interceptors.response.use(
-    response => {
-      transformResponseKeysToCamelCase(response);
+// const responseInterceptors = () => {
+//   axios.interceptors.response.use(
+//     response => {
+//       transformResponseKeysToCamelCase(response);
 
-      return response.data;
-    },
-    error => Promise.reject(error)
-  );
-};
+//       return response.data;
+//     },
+//     error => Promise.reject(error)
+//   );
+// };
 
-const requestInterceptors = () => {
-  // since all ramda functions are curried by default so
-  axios.interceptors.request.use(
-    //above function is modified as below
-    evolve({ data: serializeKeysToSnakeCase, params: serializeKeysToSnakeCase })
-  );
-};
+// const requestInterceptors = () => {
+//   // since all ramda functions are curried by default so
+//   axios.interceptors.request.use(
+//     //above function is modified as below
+//     evolve({ data: serializeKeysToSnakeCase, params: serializeKeysToSnakeCase })
+//   );
+// };
 
 export const initializeAxios = () => {
   axios.defaults.baseURL = "/";
   setAuthHeaders();
   setHttpHeaders();
-  requestInterceptors();
-  responseInterceptors();
+  // requestInterceptors();
+  // responseInterceptors();
 };
