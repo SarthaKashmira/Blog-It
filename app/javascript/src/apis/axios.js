@@ -1,6 +1,11 @@
 import axios from "axios";
+
+import { Toastr } from "components/commons";
+import { setToLocalStorage, getFromLocalStorage } from "utils/storage";
+
 // import { keysToCamelCase, serializeKeysToSnakeCase } from "neetocist";
 // import { evolve } from "ramda";
+const DEFAULT_ERROR_NOTIFICATION = "Something went wrong!";
 
 const setAuthHeaders = () => {
   axios.defaults.headers = {
@@ -10,48 +15,55 @@ const setAuthHeaders = () => {
       .querySelector('[name="csrf-token"]')
       .getAttribute("content"),
   };
-  const token = localStorage.getItem("authToken");
-  const email = localStorage.getItem("authEmail");
+  const token = getFromLocalStorage("authToken");
+  const email = getFromLocalStorage("authEmail");
   if (token && email) {
     axios.defaults.headers["X-Auth-Email"] = email;
     axios.defaults.headers["X-Auth-Token"] = token;
   }
 };
 
-const setHttpHeaders = () => {
-  axios.defaults.headers = {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-  };
+const handleSuccessResponse = response => {
+  if (response) {
+    response.success = response.status === 200;
+    if (response.data.notice) {
+      Toastr.success(response.data.notice);
+    }
+  }
+
+  return response;
 };
 
-// const transformResponseKeysToCamelCase = response => {
-//   if (response.data) response.data = keysToCamelCase(response.data);
-// };
+const handleErrorResponse = axiosErrorObject => {
+  if (axiosErrorObject.response?.status === 401) {
+    setToLocalStorage({ authToken: null, email: null, userId: null });
+    setTimeout(() => (window.location.href = "/"), 2000);
+  }
 
-// const responseInterceptors = () => {
-//   axios.interceptors.response.use(
-//     response => {
-//       transformResponseKeysToCamelCase(response);
+  Toastr.error(
+    axiosErrorObject.response?.data?.error || DEFAULT_ERROR_NOTIFICATION
+  );
+  if (axiosErrorObject.response?.status === 423) {
+    window.location.href = "/";
+  }
 
-//       return response.data;
-//     },
-//     error => Promise.reject(error)
-//   );
-// };
+  return Promise.reject(axiosErrorObject);
+};
 
-// const requestInterceptors = () => {
-//   // since all ramda functions are curried by default so
-//   axios.interceptors.request.use(
-//     //above function is modified as below
-//     evolve({ data: serializeKeysToSnakeCase, params: serializeKeysToSnakeCase })
-//   );
-// };
+const registerIntercepts = () => {
+  axios.interceptors.response.use(handleSuccessResponse, error =>
+    handleErrorResponse(error)
+  );
+};
 
-export const initializeAxios = () => {
+const resetAuthTokens = () => {
+  delete axios.defaults.headers["X-Auth-Email"];
+  delete axios.defaults.headers["X-Auth-Token"];
+};
+
+const initializeAxios = () => {
   axios.defaults.baseURL = "/";
   setAuthHeaders();
-  setHttpHeaders();
-  // requestInterceptors();
-  // responseInterceptors();
 };
+
+export { initializeAxios, registerIntercepts, setAuthHeaders, resetAuthTokens };

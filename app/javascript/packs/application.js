@@ -13,15 +13,16 @@
 //
 // const images = require.context('./images', true)
 // const imagePath = (name) => images(name, true)
-import "../stylesheets/application.scss"
+import "../stylesheets/application.scss";
 
 const componentRequireContext = require.context("src", true);
 
-const { initializeAxios } = require("apis/axios");
+const { initializeAxios, registerIntercepts } = require("apis/axios");
 const { initializeLogger } = require("common/logger");
 
 initializeLogger();
 initializeAxios();
+registerIntercepts();
 
 const ReactRailsUJS = require("react_ujs");
 ReactRailsUJS.useContext(componentRequireContext);
