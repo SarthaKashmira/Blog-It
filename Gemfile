@@ -47,9 +47,17 @@ gem "react-rails", "~> 2.7.1"
 # bcrypt is secured password hashing algorithm
 gem "bcrypt", "~> 3.1.13"
 
+# For testing the test-coverage
+gem "simplecov", require: false, group: :test
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
+
+  gem "factory_bot_rails"
+
+  # For auto-generating demo data
+  gem "faker"
 
   gem "rubocop", require: false
   gem "rubocop-rails", require: false
