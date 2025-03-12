@@ -9,7 +9,7 @@ FactoryBot.define do
     is_bloggable { false }
     slug { title.parameterize }
 
-    association :organization
+    association :organization # This can also be done by just adding organization
     association :user
   end
 end

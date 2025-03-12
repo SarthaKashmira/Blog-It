@@ -3,11 +3,10 @@ import React, { useEffect, useState } from "react";
 import { Input, Select } from "@bigbinary/neetoui";
 import { useHistory } from "react-router-dom";
 
-import PageLoader from "./commons/PageLoader";
-import Sidebar from "./Sidebar";
-
-import categoriesApi from "../apis/categories";
-import postsApi from "../apis/posts";
+import categoriesApi from "../../apis/categories";
+import postsApi from "../../apis/posts";
+import { PageLoader } from "../commons";
+import Header from "../commons/Header";
 
 const NewBlog = () => {
   const [title, setTitle] = useState("");
@@ -15,6 +14,7 @@ const NewBlog = () => {
   const [loading, setLoading] = useState(false);
   const [categoriesShow, setCategoriesShow] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [status, setStatus] = useState("Publish");
 
   const history = useHistory();
   const handleSubmit = async event => {
@@ -26,6 +26,7 @@ const NewBlog = () => {
         description,
         is_bloggable: false,
         category_ids: selectedCategories.map(category => category.value),
+        status: status === "Publish" ? "publish" : "draft",
       });
       setLoading(false);
       history.push("/");
@@ -56,10 +57,9 @@ const NewBlog = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      <Sidebar />
       <div className="container mx-auto max-w-4xl px-4 py-8">
-        <h1 className="mb-8 text-4xl font-bold text-gray-900">New blog post</h1>
         <div className="rounded-lg bg-white p-8 shadow-md">
+          <Header {...{ setStatus, status }} formType="New" />
           <form onSubmit={handleSubmit}>
             <Input
               className="mb-6"

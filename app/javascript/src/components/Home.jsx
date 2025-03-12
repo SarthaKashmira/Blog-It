@@ -7,7 +7,6 @@ import Logout from "./Authentication/Logout";
 import Card from "./Blogs/Card";
 import Categories from "./Categories";
 import PageLoader from "./commons/PageLoader";
-import Sidebar from "./Sidebar";
 
 import postsApi from "../apis/posts";
 
@@ -42,13 +41,12 @@ const Home = () => {
 
   return (
     <div className="flex">
-      <Sidebar />
       <Categories />
-      <div className="w-screen px-8 pb-6 pt-2">
+      <div className="flex-grow px-8 pt-2">
         {/* This is the header in the home section of showing all the blogs */}
         <div className="mb-8 flex items-center justify-between">
           <h1 className="text-3xl font-bold">Blog posts</h1>
-          <div className="flex">
+          <div className="m-2 flex space-x-2">
             <Link to="/create_new_post">
               <Button
                 className=" bg-black text-white hover:bg-gray-800"
