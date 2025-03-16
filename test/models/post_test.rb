@@ -6,7 +6,7 @@ class PostTest < ActiveSupport::TestCase
   def setup
     @organization = create(:organization)
     @user = create(:user)
-    @post = create(:post)
+    @post = create(:post, user: @user, organization: @organization)
   end
 
   def test_post_should_not_be_valid_and_saved_without_title

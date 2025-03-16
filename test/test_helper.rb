@@ -24,6 +24,15 @@ ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
 
+def headers(user, options = {})
+  {
+    Accept: "application/json",
+    "Content_Type" => "application/json",
+    "X-Auth-Token" => user.authentication_token,
+    "X-Auth-Email" => user.email
+  }.merge(options)
+end
+
 module ActiveSupport
   class TestCase
     include FactoryBot::Syntax::Methods

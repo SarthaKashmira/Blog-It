@@ -32,9 +32,11 @@ const Header = ({ formType = "New", slug, setStatus, status, updated }) => {
             Draft saved at {date.toLocaleString()}
           </Typography>
         )}
-        <Link target="_blank" to={`/post/${slug}`}>
-          <ExternalLink className="inline-block" />
-        </Link>
+        {formType === "Edit" && (
+          <Link target="_blank" to={`/post/${slug}`}>
+            <ExternalLink className="inline-block" />
+          </Link>
+        )}
         {formType === "Edit" && (
           <Button className="text-black " label="Cancel" style="secondary" />
         )}
