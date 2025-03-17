@@ -21,14 +21,3 @@ json.posts @posts do |post|
     json.name category.name
   end
 end
-
-json.user_posts @user_posts do |post|
-  json.title post.title
-  json.updated_at post.updated_at
-  json.status post.status
-  json.slug post.slug
-
-  json.categories post.categories do |category|
-    json.name category.name
-  end
-end

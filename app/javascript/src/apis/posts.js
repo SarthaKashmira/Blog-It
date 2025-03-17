@@ -4,7 +4,7 @@ import { getFromLocalStorage } from "../utils/storage";
 
 const userId = getFromLocalStorage("authUserId");
 
-const fetch = () => axios.get("api/v1/posts");
+const fetch = payload => axios.get("api/v1/posts", { params: { ...payload } });
 
 const create = payload => {
   logger.info(userId);
@@ -18,6 +18,20 @@ const update = ({ payload, slug }) =>
 
 const destroy = slug => axios.delete(`api/v1/posts/${slug}`);
 
-const postsApi = { fetch, create, show, update, destroy };
+const destroyAll = ({ payload }) =>
+  axios.delete("api/v1/posts/bulk_delete", { data: { ...payload } });
+
+const updateAll = ({ payload }) =>
+  axios.patch("api/v1/posts/bulk_update", { ...payload });
+
+const postsApi = {
+  fetch,
+  create,
+  show,
+  update,
+  destroy,
+  destroyAll,
+  updateAll,
+};
 
 export default postsApi;

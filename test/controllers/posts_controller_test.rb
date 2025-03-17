@@ -3,7 +3,11 @@
 require "test_helper"
 
 class PostsControllerTest < ActionDispatch::IntegrationTest
-  # test "the truth" do
-  #   assert true
-  # end
+  def setup
+    @user = create(:user)
+    @organization = create(:organization)
+    @category = create(:category)
+    @post = create(:post, user: @user, organization: @organization)
+    @headers = headers(@user)
+  end
 end

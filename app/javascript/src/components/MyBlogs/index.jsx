@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { MenuHorizontal } from "@bigbinary/neeto-icons";
 import { Dropdown, Table, Typography } from "@bigbinary/neetoui";
 
+import MyBlogsHeader from "./MyBlogsHeader";
+
 import postsApi from "../../apis/posts";
 import { PageLoader } from "../commons";
 
@@ -12,13 +14,13 @@ const MyBlogs = () => {
 
   const [myBlogs, setMyBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [selectedKeys, setSelectedKeys] = useState([]);
   const fetchDetails = async () => {
     try {
       const {
-        data: { user_posts },
-      } = await postsApi.fetch();
-      setMyBlogs(user_posts);
+        data: { posts },
+      } = await postsApi.fetch({ query: "my_blogs" });
+      setMyBlogs(posts);
       setLoading(false);
     } catch (error) {
       logger.error(error);
@@ -54,17 +56,17 @@ const MyBlogs = () => {
 
   return (
     <>
-      <div className="mx-2 max-w-4xl py-8">
-        <div className="flex flex-col space-y-1">
-          <h1 className="text-3xl font-bold text-gray-900">My blog posts</h1>
-          <p className="text-sm text-gray-600">{myBlogs.length} articles</p>
-        </div>
-      </div>
+      <div className="mx-2 max-w-4xl py-8" />
+      <MyBlogsHeader
+        myBlogsLength={myBlogs.length}
+        {...{ setMyBlogs, selectedKeys }}
+      />
       <Table
         rowSelection
         currentPageNumber={1}
         defaultPageSize={10}
         handlePageChange={() => {}}
+        selectedRowKeys={selectedKeys}
         columnData={[
           {
             dataIndex: "title",
@@ -129,13 +131,16 @@ const MyBlogs = () => {
         ]}
         rowData={myBlogs.map(item => ({
           key: item.slug,
+          id: item.slug,
           title: item.title,
           category: item.categories.map(category => category.name).join(", "),
           last_published_at: new Date(item.updated_at).toLocaleString(),
           status: item.status,
         }))}
         onRowClick={() => {}}
-        onRowSelect={() => {}}
+        onRowSelect={selectedRowKeys => {
+          setSelectedKeys(selectedRowKeys);
+        }}
       />
     </>
   );
