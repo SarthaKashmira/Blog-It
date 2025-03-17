@@ -1,32 +1,14 @@
 # frozen_string_literal: true
 
 class PostsDeleteService
-  attr_reader :params
-
   def initialize(params)
-    @params = params
+    @slugs = params[:slugs]
   end
 
   def call
-    return { success: false, message: "No valid deletion params provided" } unless valid_params?
+    return { message: "No valid deletion params provided", status: :unprocessable_entity } unless @slugs.present?
 
-    if params[:query] == "delete_all" && params[:selectedKeys].present?
-      deleted_count = Post.where(slug: params[:selectedKeys]).destroy_all.size
-      return { success: true, message: "#{deleted_count} posts deleted" }
-    elsif params[:slug].present?
-      post = Post.find_by(slug: params[:slug])
-      return { success: false, message: "Post not found" } unless post
-
-      post.destroy
-      return { success: true, message: "Post deleted successfully" }
-    end
-
-    { success: false, message: "Invalid parameters" }
+    deleted_count = Post.where(slug: @slugs).destroy_all.size
+    { message: I18n.t("successfully_deleted", entity: "#{deleted_count} posts"), status: :ok }
   end
-
-  private
-
-    def valid_params?
-      params[:slug].present? || (params[:query] == "delete_all" && params[:selectedKeys].is_a?(Array))
-    end
 end
