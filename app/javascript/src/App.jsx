@@ -17,12 +17,14 @@ import { getFromLocalStorage } from "./utils/storage";
 const App = () => {
   const authToken = getFromLocalStorage("authToken");
   const isLoggedIn = !either(isNil, isEmpty)(authToken);
+  const authPages = ["/login", "/signup"];
+  const showSidebar = !authPages.includes(location.pathname);
 
   return (
     <Router>
       <ToastContainer />
       <div className="flex">
-        <Sidebar />
+        {showSidebar && <Sidebar />}
         <div className="w-screen">
           <Switch>
             <Route exact component={NewBlog} path="/create_new_post" />
