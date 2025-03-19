@@ -11,7 +11,8 @@ gem "rails", "~> 7.1.5", ">= 7.1.5.1"
 gem "sprockets-rails"
 
 # Use sqlite3 as the database for Active Record
-gem "sqlite3", ">= 1.4"
+gem "pg", group: [:production]
+gem "sqlite3", "~> 1.4", group: [:development, :test]
 
 # use this for using regexp in sqlite3
 gem "sqlite3_ar_regexp", "~> 3.0"
