@@ -1,17 +1,22 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  namespace :api do
-    namespace :v1 do
-      resources :posts, only: %i[index create show update destroy], param: :slug do
-        collection do
-          delete :bulk_delete
-          patch :bulk_update
+  constraints(lambda { |req| req.format == :json }) do
+    namespace :api do
+      namespace :v1 do
+        resources :posts, only: %i[index create show update destroy], param: :slug do
+          collection do
+            delete :bulk_delete
+            patch :bulk_update
+          end
+          member do
+            post :vote
+          end
         end
+        resources :categories, only: %i[index create ]
+        resources :users, only: %i[create]
+        resource :sessions, only: %i[create destroy]
       end
-      resources :categories, only: %i[index create ]
-      resources :users, only: %i[create]
-      resource :sessions, only: %i[create destroy]
     end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

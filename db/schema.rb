@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_11_125121) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_18_132707) do
   create_table "categories", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -28,6 +28,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_11_125121) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "post_votes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "post_id", null: false
+    t.integer "vote_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_post_votes_on_post_id"
+    t.index ["user_id", "post_id"], name: "index_post_votes_on_user_id_and_post_id", unique: true
+    t.index ["user_id"], name: "index_post_votes_on_user_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -58,6 +69,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_11_125121) do
     t.index ["organization_id"], name: "index_users_on_organization_id"
   end
 
+  add_foreign_key "post_votes", "posts"
+  add_foreign_key "post_votes", "users"
   add_foreign_key "posts", "organizations"
   add_foreign_key "posts", "users"
   add_foreign_key "users", "organizations"

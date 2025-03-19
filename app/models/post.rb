@@ -6,6 +6,7 @@ class Post < ApplicationRecord
   enum :status, { publish: "publish", draft: "draft" }, default: :publish
   belongs_to :user
   belongs_to :organization
+  has_many :post_votes, dependent: :destroy
   has_and_belongs_to_many :categories
 
   validates :title, presence: true, length: { maximum: MAX_TITLE_LENGTH }
@@ -18,6 +19,17 @@ class Post < ApplicationRecord
 
   before_create :set_slug
   before_validation :set_user_organization, on: :create
+  before_save :update_bloggable_status, if: -> { upvotes_changed? || downvotes_changed? }
+
+  def update_bloggable_status
+    threshold = Constants::VOTE_THRESHOLD # Fetch threshold from constants
+    new_status = net_votes >= threshold
+    self.is_bloggable = new_status if is_bloggable != new_status
+  end
+
+  def net_votes
+    upvotes - downvotes
+  end
 
   private
 

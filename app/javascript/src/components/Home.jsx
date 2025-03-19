@@ -66,6 +66,9 @@ const Home = () => {
               slug: post.slug,
               user_name: post.user.name,
               categories: post.categories,
+              upvotes: post.upvotes,
+              downvotes: post.downvotes,
+              vote_type: post.vote_type,
             };
 
             return <Card key={details.id} {...details} />;

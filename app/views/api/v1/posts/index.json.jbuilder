@@ -1,5 +1,7 @@
 json.posts @posts do |post|
-  json.extract! post, :id, :title, :description, :is_bloggable, :slug, :created_at, :updated_at, :status
+  json.extract! post, :id, :title, :description, :is_bloggable, :slug, :created_at, :updated_at, :status, :upvotes, :downvotes
+
+  json.vote_type post.post_votes.find_by(user_id: @user.id)&.vote_type
 
   json.user do
     if post.user.present?
