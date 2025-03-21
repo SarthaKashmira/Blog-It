@@ -8,6 +8,7 @@ class Post < ApplicationRecord
   belongs_to :organization
   has_many :post_votes, dependent: :destroy
   has_and_belongs_to_many :categories
+  has_one_attached :report
 
   validates :title, presence: true, length: { maximum: MAX_TITLE_LENGTH }
   validates :description, presence: true, length: { maximum: MAX_DESCRIPTION_LENGTH }
@@ -58,5 +59,9 @@ class Post < ApplicationRecord
 
     def set_user_organization
       self.organization_id ||= 4
+    end
+
+    def publish?
+      status_before_type_cast == "publish"
     end
 end

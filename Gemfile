@@ -50,9 +50,11 @@ gem "bcrypt", "~> 3.1.13"
 
 gem "sidekiq", ">=7"
 
+gem "google-cloud-storage"
 gem "wicked_pdf"
 gem "wkhtmltopdf-binary"
 
+gem "dotenv-rails"
 # For testing the test-coverage
 gem "simplecov", require: false, group: :test
 
