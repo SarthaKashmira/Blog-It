@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import { Calendar, Edit, User } from "@bigbinary/neeto-icons";
+import { Calendar, Download, Edit, User } from "@bigbinary/neeto-icons";
 import { Avatar, Tag, Typography } from "@bigbinary/neetoui";
 import { useParams, Link } from "react-router-dom";
 
-import { PageLoader } from "./commons";
+import { PageLoader, Toastr } from "./commons";
 
 import postsApi from "../apis/posts";
 
@@ -25,9 +25,51 @@ const DetailedBlog = () => {
     }
   };
 
+  const generatePdf = async () => {
+    try {
+      await postsApi.generatePdf(postShow.slug);
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  const saveAs = ({ blob, fileName }) => {
+    const objectUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = objectUrl;
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode.removeChild(link);
+    setTimeout(() => window.URL.revokeObjectURL(objectUrl), 150);
+  };
+
+  const downloadPdf = async () => {
+    try {
+      Toastr.success("Downloading report...");
+      const { data } = await postsApi.download(postShow.slug);
+      saveAs({ blob: data, fileName: "granite_task_report.pdf" });
+    } catch (error) {
+      logger.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchPostDetails();
   }, []);
+
+  const handleDownload = () => {
+    try {
+      generatePdf();
+      setTimeout(() => {
+        downloadPdf();
+      }, 5000);
+    } catch (error) {
+      logger.error(error);
+    }
+  };
 
   if (isLoading) {
     return <PageLoader />;
@@ -60,6 +102,7 @@ const DetailedBlog = () => {
                 type="outline"
               />
             )}
+            <Download onClick={handleDownload} />
             <Link to={`/edit_post/${postShow.slug}`}>
               <Edit />
             </Link>

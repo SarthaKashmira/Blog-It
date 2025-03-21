@@ -5,6 +5,9 @@ Rails.application.routes.draw do
     namespace :api do
       namespace :v1 do
         resources :posts, only: %i[index create show update destroy], param: :slug do
+          resource :report, only: %i[create], module: :posts do
+            get :download, on: :collection
+          end
           collection do
             delete :bulk_delete
             patch :bulk_update

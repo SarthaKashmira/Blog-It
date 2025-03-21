@@ -48,6 +48,11 @@ gem "react-rails", "~> 2.7.1"
 # bcrypt is secured password hashing algorithm
 gem "bcrypt", "~> 3.1.13"
 
+gem "sidekiq", ">=7"
+
+gem "wicked_pdf"
+gem "wkhtmltopdf-binary"
+
 # For testing the test-coverage
 gem "simplecov", require: false, group: :test
 

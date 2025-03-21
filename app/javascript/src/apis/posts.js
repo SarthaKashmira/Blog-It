@@ -24,6 +24,11 @@ const destroyAll = ({ payload }) =>
 const updateAll = ({ payload }) =>
   axios.patch("api/v1/posts/bulk_update", { ...payload });
 
+const generatePdf = slug => axios.post(`api/v1/posts/${slug}/report`, {});
+
+const download = slug =>
+  axios.get(`api/v1/posts/${slug}/report/download`, { responseType: "blob" });
+
 const postsApi = {
   fetch,
   create,
@@ -32,6 +37,8 @@ const postsApi = {
   destroy,
   destroyAll,
   updateAll,
+  generatePdf,
+  download,
 };
 
 export default postsApi;
