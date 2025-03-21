@@ -2,7 +2,7 @@
 
 class Api::V1::Posts::ReportsController < ApplicationController
   def create
-    ReportsJob.perform_async(params[:post_slug], report_path.to_s)
+    ReportsJob.perform_async(params[:post_slug], report_path.to_s, current_user.id)
     render_notice(t("in_progress", action: "Report generation"))
   end
 

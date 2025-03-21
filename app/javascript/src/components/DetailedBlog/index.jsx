@@ -4,12 +4,14 @@ import { Calendar, Download, Edit, User } from "@bigbinary/neeto-icons";
 import { Avatar, Tag, Typography } from "@bigbinary/neetoui";
 import { useParams, Link } from "react-router-dom";
 
-import { PageLoader, Toastr } from "./commons";
+import postsApi from "apis/posts";
+import { PageLoader } from "components/commons";
 
-import postsApi from "../apis/posts";
+import DownloadModal from "./DownloadModal";
 
 const DetailedBlog = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [postShow, setPostShow] = useState({});
   const { slug } = useParams();
   const fetchPostDetails = async () => {
@@ -25,51 +27,9 @@ const DetailedBlog = () => {
     }
   };
 
-  const generatePdf = async () => {
-    try {
-      await postsApi.generatePdf(postShow.slug);
-    } catch (error) {
-      logger.error(error);
-    }
-  };
-
-  const saveAs = ({ blob, fileName }) => {
-    const objectUrl = window.URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = objectUrl;
-    link.setAttribute("download", fileName);
-    document.body.appendChild(link);
-    link.click();
-    link.parentNode.removeChild(link);
-    setTimeout(() => window.URL.revokeObjectURL(objectUrl), 150);
-  };
-
-  const downloadPdf = async () => {
-    try {
-      Toastr.success("Downloading report...");
-      const { data } = await postsApi.download(postShow.slug);
-      saveAs({ blob: data, fileName: "granite_task_report.pdf" });
-    } catch (error) {
-      logger.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
     fetchPostDetails();
   }, []);
-
-  const handleDownload = () => {
-    try {
-      generatePdf();
-      setTimeout(() => {
-        downloadPdf();
-      }, 5000);
-    } catch (error) {
-      logger.error(error);
-    }
-  };
 
   if (isLoading) {
     return <PageLoader />;
@@ -102,7 +62,7 @@ const DetailedBlog = () => {
                 type="outline"
               />
             )}
-            <Download onClick={handleDownload} />
+            <Download onClick={() => setShowModal(true)} />
             <Link to={`/edit_post/${postShow.slug}`}>
               <Edit />
             </Link>
@@ -132,6 +92,9 @@ const DetailedBlog = () => {
           <Typography className="mt-2">{postShow.description}</Typography>
         </div>
       </div>
+      {showModal && (
+        <DownloadModal {...{ showModal, setShowModal, slug: postShow.slug }} />
+      )}
     </div>
   );
 };

@@ -40,3 +40,8 @@ en:
     incorrect_credentials: "Incorrect credentials, try again."
   not_found: "Cannot find report"
   in_progress: "Report generation is still in progress"
+  report:
+    render: "Rendering the report"
+    generate: "Generating the PDF report"
+    upload: "Uploading to server"
+    attach: "Attaching the report to the user"

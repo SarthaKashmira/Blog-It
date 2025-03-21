@@ -55,6 +55,9 @@ gem "wicked_pdf"
 gem "wkhtmltopdf-binary"
 
 gem "dotenv-rails"
+
+gem "redis", "~> 4.0"
+
 # For testing the test-coverage
 gem "simplecov", require: false, group: :test
 
