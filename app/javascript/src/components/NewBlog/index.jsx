@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 import { Input, Select } from "@bigbinary/neetoui";
-import { useHistory } from "react-router-dom";
 
 import categoriesApi from "../../apis/categories";
 import postsApi from "../../apis/posts";
@@ -15,8 +14,6 @@ const NewBlog = () => {
   const [categoriesShow, setCategoriesShow] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [status, setStatus] = useState("Publish");
-
-  const history = useHistory();
   const handleSubmit = async event => {
     event.preventDefault();
     setLoading(true);
@@ -29,7 +26,7 @@ const NewBlog = () => {
         status: status === "Publish" ? "publish" : "draft",
       });
       setLoading(false);
-      history.push("/");
+      window.location.href = "/";
     } catch (error) {
       logger.error(error);
       setLoading(false);

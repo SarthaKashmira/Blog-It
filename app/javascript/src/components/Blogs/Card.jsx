@@ -17,7 +17,7 @@ const Card = ({
   downvotes,
   vote_type,
 }) => (
-  <div>
+  <div className="flex-col">
     <div className="relative flex w-full items-center justify-between" key={id}>
       <div className="pb-6">
         {categories.map(category => (
@@ -35,7 +35,9 @@ const Card = ({
           </Typography>
         </Link>
         <Typography className="mb-2 text-sm text-gray-600">
-          {description}
+          {description.length > 40
+            ? `${description.slice(0, 30)}...`
+            : description}
         </Typography>
         <Typography className="mb-1 text-sm font-bold text-black">
           Author:- {user_name}
@@ -46,7 +48,7 @@ const Card = ({
       </div>
       <Vote {...{ upvotes, downvotes, slug, vote_type }} />
     </div>
-    <div className="absolute bottom-0 left-0 w-full border-b border-gray-200" />
+    <div className="relative bottom-0 left-0 w-full border-b border-gray-400" />
   </div>
 );
 

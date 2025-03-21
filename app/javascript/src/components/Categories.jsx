@@ -36,7 +36,7 @@ const Categories = () => {
 
   return (
     <div>
-      <div className="h-screen w-64 bg-gray-100 p-4">
+      <div className="h-full w-64 bg-gray-100 p-4">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold">CATEGORIES</h2>
           <div className="flex space-x-2">
