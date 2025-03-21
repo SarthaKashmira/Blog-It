@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 
 import { Plus, Search } from "@bigbinary/neeto-icons";
-import { Button, Modal, Input, Typography } from "@bigbinary/neetoui";
+import { Button, Modal, Input, Checkbox } from "@bigbinary/neetoui";
 
 import categoriesApi from "../apis/categories";
 
-const Categories = () => {
+const Categories = ({ filteredCategories, setFilteredCategories }) => {
   const [openAddCategory, setOpenAddCategory] = useState(false);
   const [category, setCategory] = useState("");
   const [categoriesShow, setCategoriesShow] = useState([]);
@@ -30,6 +30,16 @@ const Categories = () => {
     }
   };
 
+  const handleCategoryUpdates = (id, checked) => {
+    if (checked) {
+      setFilteredCategories([...filteredCategories, id]);
+    } else {
+      setFilteredCategories(
+        filteredCategories.filter(category => category !== id)
+      );
+    }
+  };
+
   useEffect(() => {
     fetchCategories();
   }, [openAddCategory]);
@@ -46,14 +56,16 @@ const Categories = () => {
             <Search />
           </div>
         </div>
-        {categoriesShow.map((category, index) => (
-          <Typography
-            className="m-4 rounded-md bg-gray-200 p-3 text-gray-800"
-            key={index}
-            style="h3"
-          >
-            {category.name}
-          </Typography>
+        {categoriesShow.map(category => (
+          <Checkbox
+            className="mb-2 rounded-md bg-gray-300 p-2"
+            id={category.id}
+            key={category.id}
+            label={category.name}
+            onChange={event => {
+              handleCategoryUpdates(event.target.id, event.target.checked);
+            }}
+          />
         ))}
       </div>
       <Modal isOpen={openAddCategory} onClose={() => setOpenAddCategory(false)}>

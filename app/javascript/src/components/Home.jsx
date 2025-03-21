@@ -13,12 +13,12 @@ import postsApi from "../apis/posts";
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filteredCategories, setFilteredCategories] = useState([]);
   const fetchPosts = async () => {
     try {
       const {
         data: { posts },
-      } = await postsApi.fetch();
-      logger.info(posts);
+      } = await postsApi.fetch({ categories: filteredCategories });
       setPosts(posts);
       setLoading(false);
     } catch (error) {
@@ -29,7 +29,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [filteredCategories]);
 
   if (loading) {
     return (
@@ -41,7 +41,7 @@ const Home = () => {
 
   return (
     <div className="flex">
-      <Categories />
+      <Categories {...{ filteredCategories, setFilteredCategories }} />
       <div className="flex-grow px-8 pt-2">
         {/* This is the header in the home section of showing all the blogs */}
         <div className="mb-8 flex items-center justify-between">

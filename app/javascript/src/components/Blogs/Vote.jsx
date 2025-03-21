@@ -9,8 +9,6 @@ const Vote = ({ upvotes, downvotes, slug, vote_type }) => {
   const [showNetVotes, setShowNetVotes] = useState(showUpvotes - showDownvotes);
   const [showVoteType, setShowVoteType] = useState(vote_type);
 
-  logger.info(vote_type);
-
   const handleVote = async voteType => {
     try {
       const {
