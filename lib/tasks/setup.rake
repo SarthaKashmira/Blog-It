@@ -19,8 +19,8 @@ def create_sample_data!
   create_organization!(name: 'BigBinary Corporation')
   puts "Created Organization: #{organization.name}"
 
-  create_user!(email: 'oliver@example.com', name: 'Oliver', organization: organization)
-  create_user!(email: 'sam@example.com', name: 'Sam', organization: organization)
+  create_user!(email: 'oliver@example.com', name: 'Oliver', organization_id: organization.id)
+  create_user!(email: 'sam@example.com', name: 'Sam', organization_id: organization.id)
 
   puts 'Done! Now you can login with either "oliver@example.com" or "sam@example.com", using password "welcome"'
 end

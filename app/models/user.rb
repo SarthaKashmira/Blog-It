@@ -28,6 +28,6 @@ class User < ApplicationRecord
     end
 
     def add_organization
-      self.organization_id ||= 4
+      self.organization_id ||= Organization.first&.id
     end
 end
