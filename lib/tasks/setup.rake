@@ -16,6 +16,7 @@ def create_sample_data!
   puts 'Seeding with sample data...'
 
   organization = create_organization!(name: 'Tech Corp')
+  create_organization!(name: 'BigBinary Corporation')
   puts "Created Organization: #{organization.name}"
 
   create_user!(email: 'oliver@example.com', name: 'Oliver', organization: organization)
