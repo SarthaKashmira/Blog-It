@@ -9,16 +9,16 @@ task setup: [:environment] do
     Rake::Task['db:migrate'].invoke
   end
 
-  Rake::Task['populate_with_sample_data'].invoke if Rails.env.development?
+  Rake::Task['populate_with_sample_data'].invoke
 end
 
 task populate_with_sample_data: [:environment] do
   if Rails.env.production?
     puts "Skipping deleting and populating sample data in production"
   else
-    create_sample_data!
     puts "Sample data has been added."
   end
+  create_sample_data!
 end
 
 def create_sample_data!
@@ -27,7 +27,7 @@ def create_sample_data!
   create_organization!(name: 'Tech Corp')
   create_organization!(name: 'BigBinary Corporation')
   create_organization!(name: 'Awesome Inc')
-  
+
 end
 
 def create_organization!(options = {})
