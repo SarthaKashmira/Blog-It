@@ -6,7 +6,7 @@ class User < ApplicationRecord
   VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i.freeze
   MAX_EMAIL_LENGTH = 255
   belongs_to :organization
-  has_many :posts
+  has_many :posts, dependent: :destroy
   has_many :post_votes, dependent: :destroy
   has_secure_password
   has_secure_token :authentication_token

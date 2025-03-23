@@ -11,6 +11,7 @@ class Api::V1::PostsController < ApplicationController
 
   def create
     post = Post.new(post_params)
+    puts post.slug
     post.save!
     render_notice(t("successfully_created", entity: "Post"))
   end

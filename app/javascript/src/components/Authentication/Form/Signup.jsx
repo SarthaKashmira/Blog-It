@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Button, Input } from "@bigbinary/neetoui";
+import { Button, Input, Select } from "@bigbinary/neetoui";
 import { Link } from "react-router-dom";
 
 const Signup = ({
@@ -10,6 +10,8 @@ const Signup = ({
   setPassword,
   loading,
   setPasswordConfirmation,
+  organizations,
+  setSelectedOrganization,
 }) => (
   <div
     className="flex min-h-screen items-center justify-center bg-gray-50
@@ -44,6 +46,15 @@ const Signup = ({
           type="email"
           onChange={e => setEmail(e.target.value)}
         />
+        <Select
+          label="Select organization"
+          placeholder="Select Organization"
+          options={organizations.map(organization => ({
+            label: organization.name,
+            value: organization.id,
+          }))}
+          onChange={setSelectedOrganization}
+        />
         <Input
           label="Password"
           placeholder="********"
@@ -61,5 +72,4 @@ const Signup = ({
     </div>
   </div>
 );
-
 export default Signup;

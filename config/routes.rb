@@ -19,6 +19,7 @@ Rails.application.routes.draw do
         resources :categories, only: %i[index create ]
         resources :users, only: %i[create]
         resource :sessions, only: %i[create destroy]
+        resources :organizations, only: %i[index]
       end
     end
   end

@@ -58,7 +58,7 @@ class Post < ApplicationRecord
     end
 
     def set_user_organization
-      self.organization_id ||= 4
+      self.organization_id ||= 1
     end
 
     def publish?
